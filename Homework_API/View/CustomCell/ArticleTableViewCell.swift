@@ -12,7 +12,7 @@ import FontAwesome_swift
 
 class ArticleTableViewCell: UITableViewCell {
 
- 
+    //MARK: - /Connetion Outlet of UIElement
     @IBOutlet weak var viewImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var authorLabel: UILabel!
@@ -37,8 +37,6 @@ class ArticleTableViewCell: UITableViewCell {
         favoriteLabel.font = UIFont.fontAwesome(ofSize: 20)
         favoriteLabel.text = String.fontAwesomeIcon(name: .heartO)
         
-        
-        
         if let title = article.title {
             titleLabel.text = title.capitalized
         }
@@ -54,9 +52,6 @@ class ArticleTableViewCell: UITableViewCell {
                // viewImage.kf.setImage(with: url)
                 viewImage.kf.setImage(with: url, placeholder: UIImage(named: "noImages"), options: nil, progressBlock: nil, completionHandler: nil)
             }
-            
         }
-        
     }
-
 }

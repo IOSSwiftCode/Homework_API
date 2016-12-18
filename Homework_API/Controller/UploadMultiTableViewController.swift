@@ -11,7 +11,7 @@ import PKHUD
 import DKImagePickerController
 import Alamofire
 
-class UploadMultiTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class UploadMultiTableViewController: UITableViewController {
     
     let dkpickerController = DKImagePickerController()
     var imageDKAsset:[DKAsset]!
@@ -23,18 +23,17 @@ class UploadMultiTableViewController: UITableViewController, UIImagePickerContro
     
     @IBOutlet var imageTableView: UITableView!
     
-    
     let headers: HTTPHeaders = [
         "Authorization": "Basic cmVzdGF1cmFudEFETUlOOnJlc3RhdXJhbnRQQFNTV09SRA==",
         "Accept": "application/json"
     ]
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
     }
 
+    //MARK: - Buttob Browse Image ============
     @IBAction func browseButton(_ sender: Any) {
         
         dkpickerController.didSelectAssets = { (assets: [DKAsset]) in
@@ -58,6 +57,7 @@ class UploadMultiTableViewController: UITableViewController, UIImagePickerContro
         })
     }
     
+    // MARK: - Button Upload Data =============
     @IBAction func uploadImageButton(_ sender: Any) {
         
         HUD.show(.progress)
@@ -65,14 +65,12 @@ class UploadMultiTableViewController: UITableViewController, UIImagePickerContro
         Alamofire.upload(
             multipartFormData: { multipartFormData in
                 
-                
                 for imageui in self.imageUIImage {
                     
                     multipartFormData.append(UIImageJPEGRepresentation(imageui, 0.6)!, withName: "files", fileName:"image.jpg", mimeType: "image/jpg")
                 }
                 
                 multipartFormData.append("restaurant".data(using: .utf8)!, withName: "name")
-                
         },
             
             to: "http://120.136.24.174:15020/v1/api/admin/upload/multiple",
@@ -92,15 +90,12 @@ class UploadMultiTableViewController: UITableViewController, UIImagePickerContro
                     }
                 case .failure(let encodingError):
                     print(encodingError)
-                }
+            }
         }
         )
-
-        
     }
     
-    
-       // MARK: - Table view data source
+    // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
        
@@ -134,12 +129,5 @@ class UploadMultiTableViewController: UITableViewController, UIImagePickerContro
         
         imageTableView.reloadData()
     }
-    
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-        
-        
-        
-    }
+
 }

@@ -28,14 +28,13 @@ class HomeArticleTableViewController: UITableViewController {
     
     let searchController = UISearchController(searchResultsController: nil)
     
+    // MARK: Pull to refresh
     func pullData(sender:AnyObject)
     {
-        
-        print("======== pull to refresh =========")
+        //print("======== pull to refresh =========")
         self.articleModel = [ArticleModel]()
         myTableView.refreshControl?.beginRefreshing()
         homeArticlePresenter?.fetchData(search: "", page: 1, limit: 15)
-        
     }
     
     override func viewDidLoad() {
@@ -63,7 +62,6 @@ class HomeArticleTableViewController: UITableViewController {
         
         HUD.hide()
         homeArticlePresenter?.fetchData(search: "", page: 1, limit: 15)
-       
     
     }
 
@@ -157,10 +155,10 @@ class HomeArticleTableViewController: UITableViewController {
             } else{
                 destView.articleDetail = self.articleModel[(indexPath?.section)!]
 
-            }
-            
-                     }
+            }            
+        }
         
+        // Click Edit row =====================
         if segue.identifier == "editSegue" {
             let destView = segue.destination as! AddEditTableViewController
             let article = sender as! ArticleModel
@@ -169,7 +167,6 @@ class HomeArticleTableViewController: UITableViewController {
             
         }
     }
-
 }
 
 // MARK: - Override func protocol
@@ -182,22 +179,21 @@ extension HomeArticleTableViewController: HomeArticleProtocol, UISearchResultsUp
             self.myTableView.reloadData()
             
         }
-        
     }
     
-    // MARK: =============== Config =========================
+    // MARK: Config Pagination =========================
     func calCulatePage(){
         
         whichLoading = true
         
-        print("===========Compare page witb total page==========")
+        //print("===========Compare page witb total page==========")
         
-        print("============Total Page: \(pagination.total_pages!)==========")
+        //print("============Total Page: \(pagination.total_pages!)==========")
         
         if pagination.page! < pagination.total_pages! {
             pagination.page  = pagination.page! + 1
             addLoadingIndicator()
-            print("============Page: \(pagination.page!)==========")
+            //print("============Page: \(pagination.page!)==========")
             homeArticlePresenter?.fetchData(search: "", page: pagination.page!, limit: 15)
             
         } else {
@@ -247,6 +243,7 @@ extension HomeArticleTableViewController: HomeArticleProtocol, UISearchResultsUp
         }
     }
     
+    //MARK: - Search Controller =============
     func updateSearchResults(for searchController: UISearchController) {
         
         if searchController.isActive {
@@ -258,7 +255,6 @@ extension HomeArticleTableViewController: HomeArticleProtocol, UISearchResultsUp
             if !((searchController.searchBar.text?.isEmpty)!) {
                 
                 homeArticlePresenter?.fetchData(search: (searchController.searchBar.text?.lowercased())!, page: 1, limit: 15)
-                
             }
         }
     }
@@ -279,5 +275,4 @@ extension HomeArticleTableViewController: HomeArticleProtocol, UISearchResultsUp
         shouldShowSearchResults = true
         self.myTableView.reloadData()
     }
-    
 }

@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+// MARK: - Delegate for HomeArticleTableViewController 
+
 protocol HomeArticleProtocol {
     
     func fetchDataFromPresenter(data: [ArticleModel], pagination:Pagination)
@@ -15,6 +18,8 @@ protocol HomeArticleProtocol {
    // func uploadImageFromPresenter()
     
 }
+
+// MARK: - Delegate for AddEditTableViewController 
 
 protocol AddEditProtocol {
     

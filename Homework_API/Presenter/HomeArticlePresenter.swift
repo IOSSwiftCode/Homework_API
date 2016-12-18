@@ -10,6 +10,7 @@ import UIKit
 
 class HomeArticlePresenter {
     
+    //MARK : - Global Variable ===========
     var homeArticleProtocol : HomeArticleProtocol?
     var addEditProtocol: AddEditProtocol?
     var connectionManager =  ConnectionManager()
@@ -17,6 +18,7 @@ class HomeArticlePresenter {
     var articleModel:ArticleModel?
     var request:String!
     
+    //MARK : - Fetch Data From Server ===========
     func fetchData(search: String, page: Int, limit: Int) {
         
         // set delegate to service ConnectionManager =================
@@ -28,12 +30,14 @@ class HomeArticlePresenter {
         
     }
     
+    //MARK : - Delete Data From Server ===========
     func deleteData(articleID: Int){
         
         connectionManager.homeArticlePresenterProtocol = self
         connectionManager.deleteDataFromServer(articleID: articleID)
     }
     
+    //MARK : - Upload Data to Server ===========
     func uploadData(article:ArticleModel, imageURL:Data){
         
         connectionManager.homeArticlePresenterProtocol = self
@@ -41,6 +45,7 @@ class HomeArticlePresenter {
         connectionManager.uploadImage(data: imageURL)
     }
     
+    //MARK : - UpDate Data to Server ===========
     func updateData(artile: ArticleModel, imageURL: Data, resquest:String) {
         connectionManager.homeArticlePresenterProtocol = self
         articleModel = artile
@@ -49,10 +54,9 @@ class HomeArticlePresenter {
         
     }
    
-    
 }
 
-// Conform to Protocol ===============================================
+//MARK: - Conform to Protocol ===============================================
 extension HomeArticlePresenter: HomeArticlePresenterProtocol {
     
     func fetchDataFromService(data: [ArticleModel], pagination:Pagination) {
@@ -64,9 +68,10 @@ extension HomeArticlePresenter: HomeArticlePresenterProtocol {
         
     }
     
+    //MARK: - notify to view
     func deleteDataFromServerFinish() {
         
-        // notify to view
+        
         homeArticleProtocol?.deleteDataFromPresenter()
     }
     
@@ -77,22 +82,21 @@ extension HomeArticlePresenter: HomeArticlePresenterProtocol {
         
         if request == nil {
             
-            print("======================uploadimage finish")
-            print(imageUrl)
+            //print("======================uploadimage finish")
+            //print(imageUrl)
            
             connectionManager.postDataToServer(article: articleModel!)
             
-            
         } else {
             
-              print("======================update finish")
+            //print("======================update finish")
             connectionManager.updateDataToServer(article: articleModel!)
         }
     }
     
     func uploadDataComplete() {
         
-        print("======================post finish")
+        //print("======================post finish")
         addEditProtocol?.completeUploadData()
     }
 }

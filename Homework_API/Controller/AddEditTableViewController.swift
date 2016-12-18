@@ -22,6 +22,7 @@ class AddEditTableViewController: UITableViewController {
     
     @IBOutlet weak var descriptionLabel: UITextView!
     
+    //MARK: Button Upload =========================
     @IBAction func uploadDataButton(_ sender: Any) {
         
         HUD.show(.progress)
@@ -32,26 +33,26 @@ class AddEditTableViewController: UITableViewController {
         
         var myData:[String:Any]!
             
-            let imageData = UIImagePNGRepresentation(viewImage.image!)
+        let imageData = UIImagePNGRepresentation(viewImage.image!)
+        
+        if let title = titleLabel.text, let description =  descriptionLabel.text  {
             
-            if let title = titleLabel.text, let description =  descriptionLabel.text  {
-                
-                myData = [
-                    "TITLE": title,
-                    "DESCRIPTION": description,
-                    "AUTHOR": 0,
-                    "CATEGORY_ID" : 0,
-                    "STATUS": "string",
-                    "IMAGE": ""
-                ]
-                
-            }
-            
-            var articleData = ArticleModel(JSON: myData)
+            myData = [
+                "TITLE": title,
+                "DESCRIPTION": description,
+                "AUTHOR": 0,
+                "CATEGORY_ID" : 0,
+                "STATUS": "string",
+                "IMAGE": ""
+            ]
+        }
+        
+        var articleData = ArticleModel(JSON: myData)
             
         if articleModel == nil {
             
              homeArticlePresenter?.uploadData(article: articleData!, imageURL: imageData!)
+            
         } else {
             
             articleData?.id = articleModel.id
@@ -59,10 +60,9 @@ class AddEditTableViewController: UITableViewController {
             
             homeArticlePresenter?.updateData(artile: articleData!, imageURL: imageData!, resquest: "request")
         }
-            
-        
     }
     
+    //MARK : - Choose Image ========================
     @IBAction func clickChooseImage(_ sender: Any) {
         
         imagePicker.delegate = self
@@ -119,7 +119,6 @@ class AddEditTableViewController: UITableViewController {
     }
     
     
-
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -132,7 +131,7 @@ class AddEditTableViewController: UITableViewController {
         return 1
     }
     
-    //MARK: Method
+    //MARK: Method for camera
     func noCamera(){
         let alertVC = UIAlertController(
             title: "No Camera",
@@ -148,21 +147,21 @@ class AddEditTableViewController: UITableViewController {
             animated: true,
             completion: nil)
     }
-
 }
-
+//MARK: - Comform Protocol ====================
 extension AddEditTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate, AddEditProtocol{
     
     // MARK: - UIImagePickerControllerDelegate Methods
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject])
-    {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         var  chosenImage = UIImage()
         chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         viewImage.contentMode = .scaleAspectFit
         viewImage.image = chosenImage
         dismiss(animated:true, completion: nil)
+
     }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
@@ -171,10 +170,9 @@ extension AddEditTableViewController: UIImagePickerControllerDelegate, UINavigat
         
         DispatchQueue.main.async {
             
-                HUD.hide()
-
+            HUD.hide()
             self.navigationController!.popViewController(animated: true)
-    
+            
         }
     }
 }

@@ -17,7 +17,4 @@ class Constant {
         static let ARTICLE_HEADER = ["Authorization" : "Basic QU1TQVBJQURNSU46QU1TQVBJUEBTU1dPUkQ=", "Accept": "application/json; charset=utf-8"]
         
     }
-    
-        static let REST_URL_BASR = "http://120.136.24.174:15020/v1/api/admin/upload/multiple"
-        static let REST_HEADER = ["Authorization" : "Basic cmVzdGF1cmFudEFETUlOOnJlc3RhdXJhbnRQQFNTV09SRA=="]
 }

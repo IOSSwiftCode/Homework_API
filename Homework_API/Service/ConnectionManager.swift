@@ -10,6 +10,7 @@ import UIKit
 
 class ConnectionManager {
 
+    //MARK: - Global Variable =================
     var homeArticlePresenterProtocol: HomeArticlePresenterProtocol?
     var articleModel = [ArticleModel]()
     var pagination: Pagination!
@@ -63,7 +64,7 @@ class ConnectionManager {
         
     }
     
-    // MARK: - Delete data from server
+    // MARK: - Delete data from server =================
     func deleteDataFromServer(articleID: Int) {
         
         //print(articleID)
@@ -94,7 +95,7 @@ class ConnectionManager {
     }
     
     
-    //MARK: Upload Image
+    //MARK: Upload Image ===================
     func uploadImage(data: Data) {
         
         let url = URL(string: Constant.ArticleConstant.ARTICLE_URL_IMAGE)
@@ -159,60 +160,22 @@ class ConnectionManager {
         
     }
     
-    //MARK: ================ Send Article to Server ==================
+    //MARK: - Send Article to Server ==================
     
     func postDataToServer(article: ArticleModel) {
             
-            let jsonString = article.toJSONString()
-            print("jsong ========= \(jsonString)")
-            
-          
-            var urlrequest = URLRequest(url: URL(string: Constant.ArticleConstant.ARTICLE_URL_BASE)!)
-            
-            urlrequest.addValue(Constant.ArticleConstant.ARTICLE_HEADER["Authorization"]!, forHTTPHeaderField: "Authorization")
-            
-            urlrequest.httpMethod = "POST"
-            //=================== Tell Server To Accept ========
-            urlrequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
-            urlrequest.addValue("application/json", forHTTPHeaderField: "Accept")
-        
-            urlrequest.httpBody = jsonString?.data(using: .utf8)
-            
-            let task = URLSession.shared.dataTask(with: urlrequest as URLRequest){ data,response,error in
-                
-                if error != nil{
-                    
-                    print("\(error?.localizedDescription)")
-                    return
-                    
-                }
-                
-                self.homeArticlePresenterProtocol?.uploadDataComplete()
-                
-            }
-            
-            task.resume()
-    }
-    
-    
-    //MARK: - Update Data 
-    func updateDataToServer(article: ArticleModel) {
-        
         let jsonString = article.toJSONString()
-        print("jsong ========= \(jsonString)")
-        
-        let url = "\(Constant.ArticleConstant.ARTICLE_URL_BASE)/\(article.id!)"
-        var urlrequest = URLRequest(url: URL(string: url)!)
-        print("url upldate ==============")
-        print(url)
+       // print("jsong ========= \(jsonString)")
+    
+        var urlrequest = URLRequest(url: URL(string: Constant.ArticleConstant.ARTICLE_URL_BASE)!)
         
         urlrequest.addValue(Constant.ArticleConstant.ARTICLE_HEADER["Authorization"]!, forHTTPHeaderField: "Authorization")
         
-        urlrequest.httpMethod = "PUT"
+        urlrequest.httpMethod = "POST"
         //=================== Tell Server To Accept ========
         urlrequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlrequest.addValue("application/json", forHTTPHeaderField: "Accept")
-        
+    
         urlrequest.httpBody = jsonString?.data(using: .utf8)
         
         let task = URLSession.shared.dataTask(with: urlrequest as URLRequest){ data,response,error in
@@ -229,10 +192,45 @@ class ConnectionManager {
         }
         
         task.resume()
-            
-        
     }
-
+    
+    
+    //MARK: - Update Data ===============
+    func updateDataToServer(article: ArticleModel) {
+        
+        let jsonString = article.toJSONString()
+        print("jsong ========= \(jsonString)")
+        
+        let url = "\(Constant.ArticleConstant.ARTICLE_URL_BASE)/\(article.id!)"
+        var urlrequest = URLRequest(url: URL(string: url)!)
+        print("url upldate ==============")
+        print(url)
+        
+        urlrequest.addValue(Constant.ArticleConstant.ARTICLE_HEADER["Authorization"]!, forHTTPHeaderField: "Authorization")
+        
+        urlrequest.httpMethod = "PUT"
+        
+        //=================== Tell Server To Accept ========
+        urlrequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlrequest.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        urlrequest.httpBody = jsonString?.data(using: .utf8)
+        
+        let task = URLSession.shared.dataTask(with: urlrequest as URLRequest){ data,response,error in
+            
+            if error != nil{
+                
+                print("\(error?.localizedDescription)")
+                return
+                
+            }
+            
+            self.homeArticlePresenterProtocol?.uploadDataComplete()
+        }
+        
+        task.resume()
+ 
+    }
 }
 
 
