@@ -13,7 +13,6 @@ class HomeArticleTableViewController: UITableViewController {
 
     @IBOutlet var myTableView: UITableView!
 
-
     var homeArticlePresenter : HomeArticlePresenter?
     
    // var request = ConnectionManager()
